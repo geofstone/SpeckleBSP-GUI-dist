@@ -1,5 +1,5 @@
 ================================================================================
-                         SpeckleBSP GUI v3.3.1
+                         SpeckleBSP GUI v3.4.1
                    Graphical Interface for SpeckleBSP Processing
                               Author: Geoff Stone
 ================================================================================
@@ -140,17 +140,19 @@ FILE NAMING CONVENTIONS
 Output files are automatically named based on FITS header information:
 
 For Science Targets:
-- Format: {target}_{filter}.bsp1
-- Example: HD123456_V.bsp1
+- Format: {target}_{filter}_{date}.bsp1
+- Example: HD123456_V_20241011.bsp1
 
 For Reference Stars (containing "_ref_" in OBJECT header):
-- Format: {target}_ref_{filter}.bsp1
-- Example: HD789_ref_V.bsp1
+- Format: {target}_ref_{filter}_{date}.bsp1
+- Example: HD789_ref_V_20241011.bsp1
 
 The program checks for:
 - NAME1* header - used as target name if present
 - OBJECT header - used if NAME1* is not found
 - FILTER header - used for filter identification
+- DATE-OBS header - used for observation date (YYYYMMDD format)
+  If DATE-OBS is not found or cannot be parsed, current date is used
 
 
 PARAMETERS EXPLAINED
@@ -394,7 +396,19 @@ TIPS FOR BEST RESULTS
 
 VERSION HISTORY
 ---------------
-v3.3.1 - Current Version (Stable Release)
+v3.4.1 - Current Version
+- Use observation date from FITS header (DATE-OBS) in output filenames
+- Output files now named: {target}_{filter}_{YYYYMMDD}.bsp1
+- Falls back to current date if DATE-OBS not found or invalid
+- Fixed abort button not working properly in batch mode
+
+v3.4.0 - Periodic Batch Processing
+- Added periodic batch processing with configurable interval
+- Automatic background processing every N minutes
+- Configurable minimum FITS file threshold per directory
+- Real-time countdown display for next batch run
+
+v3.3.1 - Stable Release
 - Updated documentation with comprehensive Fringe Pattern Analysis guide
 - Stable release with all v3.3.0-beta features
 
