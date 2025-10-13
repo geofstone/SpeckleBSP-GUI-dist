@@ -1,5 +1,5 @@
 ================================================================================
-                         SpeckleBSP GUI v3.4.1
+                         SpeckleBSP GUI v3.4.2
                    Graphical Interface for SpeckleBSP Processing
                               Author: Geoff Stone
 ================================================================================
@@ -396,7 +396,13 @@ TIPS FOR BEST RESULTS
 
 VERSION HISTORY
 ---------------
-v3.4.1 - Current Version
+v3.4.2 - Current Version
+- Added abort button to fringe pattern computation tab
+- Allows users to stop long-running fringe pattern calculations
+- Properly handles cleanup and UI state reset after abort
+- Thread-safe abort mechanism with immediate executor shutdown
+
+v3.4.1
 - Use observation date from FITS header (DATE-OBS) in output filenames
 - Output files now named: {target}_{filter}_{YYYYMMDD}.bsp1
 - Falls back to current date if DATE-OBS not found or invalid
