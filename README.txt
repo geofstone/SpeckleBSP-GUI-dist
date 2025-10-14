@@ -1,5 +1,5 @@
 ================================================================================
-                         SpeckleBSP GUI v3.4.2
+                         SpeckleBSP GUI v3.5.1
                    Graphical Interface for SpeckleBSP Processing
                               Author: Geoff Stone
 ================================================================================
@@ -41,10 +41,12 @@ The program offers two main tabs for different workflows:
 
    Batch Mode:
    - Automatically process multiple directories of FITS files
-   - Scans subdirectories for FITS files (requires at least 10 files per directory)
+   - Scans subdirectories for FITS files
+   - Configurable minimum FITS file count per directory (default: 1000)
    - Automatically names output files based on FITS header information
    - Real-time progress tracking with time estimates
    - Optional output directory for centralized file collection
+   - Optional periodic processing for automated workflows
 
 2. FRINGE PATTERN TAB - Analysis and Visualization (NEW in v3.1+)
    - Compute and display averaged power spectrum from FITS images
@@ -107,17 +109,23 @@ BATCH MODE USAGE
    - Choose correction method (median or zero)
    - Map dimensions must match science frame dimensions
 
-5. Output Options:
+5. Minimum FITS Files:
+   - Set minimum number of FITS files required per directory (default: 1000)
+   - Directories with fewer files will be skipped
+   - Applies to both regular batch mode and periodic processing
+   - Adjust based on your observation requirements
+
+6. Output Options:
    - "Copy .bsp1 files to:" - Enable to copy results to a central directory
    - "Write to directory only" - Save files ONLY to the specified directory
    - Output Directory - Browse to select where to save/copy .bsp1 files
 
-6. Processing Options:
+7. Processing Options:
    - "Reprocess existing .bsp1 files" - Overwrite existing output files
    - "Test mode" - Preview what will be processed without actually running
      (Default: OFF - ready to process immediately)
 
-7. Progress Tracking:
+8. Progress Tracking:
    - Real-time progress bar showing completion percentage
    - Dual progress bars for pre-processing (dark subtraction/RTN) and main processing
    - Current directory being processed (e.g., "Processing directory 3 of 10")
@@ -125,7 +133,14 @@ BATCH MODE USAGE
    - Per-directory processing times
    - Comprehensive summary upon completion
 
-8. Directory Structure Expected:
+9. Periodic Processing (Optional):
+   - Enable periodic batch processing for automated workflows
+   - Set interval in minutes between processing runs
+   - Uses same minimum FITS file threshold as regular batch mode
+   - Real-time countdown display showing time until next run
+   - Cancel button to stop periodic processing
+
+10. Directory Structure Expected:
    Root/
    ├── Object1_folder/
    │   └── Filter1_folder/
@@ -267,10 +282,12 @@ data and identifying binary stars:
 
 3. Autocorrelation Features (for Binary Star Analysis):
    - Automatic Peak Detection: Red X markers show detected peaks
-   - Binary Pair Identification: Green circles highlight symmetric pair
+   - Multiple Binary Pair Detection: Detects ALL symmetric peak pairs
+   - Binary Pair Selector: Dropdown to switch between detected pairs
+   - Priority Selection: Always prioritizes strongest peaks first
    - Separation Display: Title shows distance and position angle
    - 1D Slice Plot: Shows intensity profile along binary axis
-     * Central peak suppressed (±6 pixels) to reveal side lobes
+     * Adjustable center peak suppression radius (2-50 pixels)
      * Green dashed lines mark binary separation distance
      * Log scale y-axis for better visibility
 
@@ -279,7 +296,12 @@ data and identifying binary stars:
    - Asinh Stretch: Alternative scaling for extreme dynamic range
    - Colormap: Choose visualization color scheme
    - Suppress Center Peak: Remove central autocorrelation peak
+     * Radius (px): Adjustable suppression radius (2-50 pixels, default 10)
+   - Binary Pair: Dropdown to select which pair to display
    - Show Contours: Overlay contour lines on image
+   - Show Markers: Toggle visibility of side lobe markers and binary pair indicators
+     * When enabled: Shows red X markers for peaks and lime circles for binary pairs
+     * When disabled: Displays clean autocorrelation for unobstructed analysis
    - Contrast/Brightness: Adjust image display
    - Percentile Clipping: Control min/max display values
 
@@ -353,7 +375,9 @@ TROUBLESHOOTING
    - Review log files for detailed error messages
 
 4. Batch mode not finding directories:
-   - Requires at least 10 FITS files per directory
+   - Check "Min FITS files per directory" setting (default: 1000)
+   - Directories must have at least this many FITS files to be processed
+   - Adjust the threshold if your observations have fewer files
    - Check directory structure matches expected format
 
 5. Performance issues:
@@ -396,7 +420,29 @@ TIPS FOR BEST RESULTS
 
 VERSION HISTORY
 ---------------
-v3.4.2 - Current Version
+v3.5.1 - Current Version - Marker Toggle Control
+- Added "Show Markers" toggle for autocorrelation display
+- Allows viewing autocorrelation with or without side lobe markers
+- Clean display option helps analyze raw data without visual distractions
+- Checkbox located in Display Controls section
+- Binary pair information remains in title when markers are hidden
+
+v3.5.0 - Enhanced Autocorrelation Analysis
+- Added adjustable center peak suppression radius control (2-50 pixels, default 10)
+- Detects ALL symmetric binary pairs, not just the first one
+- Binary pair selector dropdown to switch between multiple detected pairs
+- Always prioritizes strongest peaks for binary pair selection
+- Pairs sorted by combined intensity with distance and angle displayed
+- Improved peak detection applies suppression radius to all analysis steps
+- Real-time display updates when switching between pairs
+
+v3.4.3
+- Moved "Min FITS files per directory" setting outside Periodic Processing section
+- Clarified that setting applies to all batch processing (regular and periodic)
+- Added output message showing threshold when scanning directories
+- Improved UI organization for better user understanding
+
+v3.4.2
 - Added abort button to fringe pattern computation tab
 - Allows users to stop long-running fringe pattern calculations
 - Properly handles cleanup and UI state reset after abort
