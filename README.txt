@@ -1,5 +1,5 @@
 ================================================================================
-                         SpeckleBSP GUI v3.5.1
+                         SpeckleBSP GUI v3.6.0
                    Graphical Interface for SpeckleBSP Processing
                               Author: Geoff Stone
 ================================================================================
@@ -155,12 +155,12 @@ FILE NAMING CONVENTIONS
 Output files are automatically named based on FITS header information:
 
 For Science Targets:
-- Format: {target}_{filter}_{date}.bsp1
-- Example: HD123456_V_20241011.bsp1
+- Format: {date}_{target}_{filter}.bsp1
+- Example: 20241011_HD123456_V.bsp1
 
 For Reference Stars (containing "_ref_" in OBJECT header):
-- Format: {target}_ref_{filter}_{date}.bsp1
-- Example: HD789_ref_V_20241011.bsp1
+- Format: {date}_{target}_ref_{filter}.bsp1
+- Example: 20241011_HD789_ref_V.bsp1
 
 The program checks for:
 - NAME1* header - used as target name if present
@@ -420,7 +420,18 @@ TIPS FOR BEST RESULTS
 
 VERSION HISTORY
 ---------------
-v3.5.1 - Current Version - Marker Toggle Control
+v3.6.0 - Current Version - Power Spectrum File Management
+- Added power spectrum file saving during batch processing (.pow files)
+- Reorganized Fringe tab into "Compute from FITS Files" and "Load from Power Spectrum Files" sections
+- Reference normalization by division (proper PSF correction for speckle interferometry)
+- Multi-threaded power spectrum computation using configured nprocs setting
+- Directory memory for all browse dialogs in Fringe tab
+- Config persistence for .pow file paths across sessions
+- Changed output filename format to date-first (YYYYMMDD_target_filter) for better chronological sorting
+- Fixed type conversion bug in power spectrum threading
+- Fixed matplotlib legend warning when markers disabled
+
+v3.5.1 - Marker Toggle Control
 - Added "Show Markers" toggle for autocorrelation display
 - Allows viewing autocorrelation with or without side lobe markers
 - Clean display option helps analyze raw data without visual distractions
@@ -450,7 +461,7 @@ v3.4.2
 
 v3.4.1
 - Use observation date from FITS header (DATE-OBS) in output filenames
-- Output files now named: {target}_{filter}_{YYYYMMDD}.bsp1
+- Output files now named: {YYYYMMDD}_{target}_{filter}.bsp1
 - Falls back to current date if DATE-OBS not found or invalid
 - Fixed abort button not working properly in batch mode
 
