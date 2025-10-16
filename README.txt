@@ -1,5 +1,5 @@
 ================================================================================
-                         SpeckleBSP GUI v3.8.1
+                         SpeckleBSP GUI v3.8.2
                    Graphical Interface for SpeckleBSP Processing
                               Author: Geoff Stone
 ================================================================================
@@ -449,7 +449,21 @@ TIPS FOR BEST RESULTS
 
 VERSION HISTORY
 ---------------
-v3.8.1 - Current Version - Bug Fixes
+v3.8.2 - Current Version - Performance Improvements
+- Fixed duplicate file counting and copying in FITS file processing
+  * Windows glob pattern matching is case-insensitive, causing files to be matched multiple times
+  * Files were being counted 2-4x and copied multiple times (overwriting each other)
+  * Added deduplication after glob operations in all 6 affected locations
+  * Accurate file counts now displayed in progress messages
+- Optimized network file copying with multi-threading (2-4x faster)
+  * Implemented ThreadPoolExecutor with 6 concurrent workers for parallel copying
+  * Smart copy strategy: small files (<10MB) use OS-optimized copy, large files use 16MB chunks
+  * Increased chunk size from 1MB to 16MB for better throughput
+  * Thread-safe progress tracking with reduced overhead
+  * Better bandwidth utilization (now uses most available bandwidth instead of ~25%)
+  * Maintained abort functionality with responsive cleanup
+
+v3.8.1 - Bug Fixes
 - Fixed abort button not working during network file copy operations in batch mode
   * Abort flag now set unconditionally, not just when subprocess exists
   * Implemented chunk-based file copying (1MB chunks) with abort checks for immediate responsiveness
