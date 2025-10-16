@@ -1,5 +1,5 @@
 ================================================================================
-                         SpeckleBSP GUI v3.8.0
+                         SpeckleBSP GUI v3.8.1
                    Graphical Interface for SpeckleBSP Processing
                               Author: Geoff Stone
 ================================================================================
@@ -449,7 +449,17 @@ TIPS FOR BEST RESULTS
 
 VERSION HISTORY
 ---------------
-v3.8.0 - Current Version - UI Enhancements and Persistence
+v3.8.1 - Current Version - Bug Fixes
+- Fixed abort button not working during network file copy operations in batch mode
+  * Abort flag now set unconditionally, not just when subprocess exists
+  * Implemented chunk-based file copying (1MB chunks) with abort checks for immediate responsiveness
+  * Added proper cleanup when abort is triggered during copy
+- Fixed .pow file generation failure when FITS files have uppercase extensions (.FIT, .FITS)
+  * Power spectrum computation now searches for all case variants
+  * Preprocessing and dark frame functions updated for consistent case handling
+  * Fringe pattern computation functions updated to support uppercase extensions
+
+v3.8.0 - UI Enhancements and Persistence
 - Added collapsible sections to Fringe Pattern tab
   * "Compute from FITS Files" and "Load from Power Spectrum Files" sections
   * Collapse states persist across application restarts
