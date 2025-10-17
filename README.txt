@@ -1,5 +1,5 @@
 ================================================================================
-                         SpeckleBSP GUI v3.8.2
+                         SpeckleBSP GUI v3.8.3
                    Graphical Interface for SpeckleBSP Processing
                               Author: Geoff Stone
 ================================================================================
@@ -449,7 +449,24 @@ TIPS FOR BEST RESULTS
 
 VERSION HISTORY
 ---------------
-v3.8.2 - Current Version - Performance Improvements
+v3.8.3 - Current Version - Batch Mode Enhancements
+- Added optional local copy of source file tree for network processing
+  * New "Local temp directory" selector for specifying copy destination
+  * "Preserve source tree structure" checkbox for maintaining folder hierarchy
+  * Incremental copying: only copies new/changed files on subsequent runs
+  * Multi-threaded copying with 6 workers for improved performance
+  * Smart file size detection to skip already-copied files
+- Two copy modes for flexibility:
+  * Unchecked (default): Uses temporary directory, cleaned up after processing
+  * Checked: Creates persistent local copy preserving source structure
+- Fixed local temp directory selector display issues
+  * Entry field now properly shows selected directory
+  * Fixed grid layout overlap that was hiding entry field
+  * Fixed initialization when batch mode enabled at startup
+- Output files respect all batch settings (copy to, write only options)
+- .bsp1 and .pow files can be created in specified output directory
+
+v3.8.2 - Performance Improvements
 - Fixed duplicate file counting and copying in FITS file processing
   * Windows glob pattern matching is case-insensitive, causing files to be matched multiple times
   * Files were being counted 2-4x and copied multiple times (overwriting each other)
