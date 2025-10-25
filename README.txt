@@ -1,5 +1,5 @@
 ================================================================================
-                         SpeckleBSP GUI v3.8.3
+                         SpeckleBSP GUI v3.9.0
                    Graphical Interface for SpeckleBSP Processing
                               Author: Geoff Stone
 ================================================================================
@@ -36,7 +36,9 @@ The program offers two main tabs for different workflows:
 1. MAIN TAB - SpeckleBSP Processing
    Single Target Mode:
    - Process FITS files from a single directory
-   - Specify custom output file name or use automatic naming
+   - Specify output directory or use input directory
+   - Automatic file naming based on FITS headers
+   - Optional .pow file generation for power spectrum analysis
    - Best for processing individual observations
 
    Batch Mode:
@@ -77,14 +79,19 @@ SINGLE TARGET MODE USAGE
      * Median of neighbors: Replace RTN pixels with 3×3 median
      * Set to zero: Set RTN pixels to zero value
 
-4. Output File (Optional):
-   - Leave blank to use automatic naming based on first FITS file
-   - Or specify a custom output filename
-   - File will be saved with .bsp1 extension
+4. Output Directory (Optional - UPDATED in v3.8.4):
+   - Leave blank to save in input directory with automatic naming
+   - Or specify an output directory for .bsp1 and .pow files
+   - Files will be automatically named based on FITS headers
 
-5. Set Parameters (see Parameters section for details)
+5. Power Spectrum Option (NEW in v3.8.4):
+   - Check "Save power spectrum (.pow file)" to generate .pow file
+   - .pow file saved alongside .bsp1 with same base name
+   - Contains averaged power spectrum data for later analysis
 
-6. Click "Run SpeckleBSP" to start processing
+6. Set Parameters (see Parameters section for details)
+
+7. Click "Run SpeckleBSP" to start processing
 
 
 BATCH MODE USAGE
@@ -115,44 +122,17 @@ BATCH MODE USAGE
    - Applies to both regular batch mode and periodic processing
    - Adjust based on your observation requirements
 
-6. Network Drive Optimization (NEW in v3.8.3):
-   For improved performance when processing files on network drives:
-
-   Local Copy Options:
-   - "Local temp directory" - Select a local folder for temporary file copies
-   - "Preserve source tree structure" checkbox - Choose how files are copied:
-     * UNCHECKED (Default): Creates temporary copy in system temp folder
-       - Files are automatically cleaned up after processing
-       - Ideal for one-time processing runs
-     * CHECKED: Creates persistent local copy maintaining folder structure
-       - Files remain after processing for future use
-       - Incremental copying: only new/changed files copied on subsequent runs
-       - Ideal for repeated processing of the same network data
-
-   Benefits:
-   - Dramatically faster processing (2-5x speed improvement typical)
-   - Multi-threaded copying with 6 concurrent workers
-   - Smart file detection skips already-copied files
-   - Reduces network traffic during processing
-   - Automatic detection of network paths (UNC and mapped drives)
-
-   Usage:
-   1. If processing network files, select a local temp directory
-   2. Choose whether to preserve folder structure based on your workflow
-   3. First run will copy all files (progress shown in status)
-   4. Subsequent runs only copy new/changed files (much faster)
-
-7. Output Options:
+6. Output Options:
    - "Copy .bsp1 files to:" - Enable to copy results to a central directory
    - "Write to directory only" - Save files ONLY to the specified directory
    - Output Directory - Browse to select where to save/copy .bsp1 files
 
-8. Processing Options:
+7. Processing Options:
    - "Reprocess existing .bsp1 files" - Overwrite existing output files
    - "Test mode" - Preview what will be processed without actually running
      (Default: OFF - ready to process immediately)
 
-9. Progress Tracking:
+8. Progress Tracking:
    - Real-time progress bar showing completion percentage
    - Dual progress bars for pre-processing (dark subtraction/RTN) and main processing
    - Current directory being processed (e.g., "Processing directory 3 of 10")
@@ -160,14 +140,14 @@ BATCH MODE USAGE
    - Per-directory processing times
    - Comprehensive summary upon completion
 
-10. Periodic Processing (Optional):
+9. Periodic Processing (Optional):
    - Enable periodic batch processing for automated workflows
    - Set interval in minutes between processing runs
    - Uses same minimum FITS file threshold as regular batch mode
    - Real-time countdown display showing time until next run
    - Cancel button to stop periodic processing
 
-11. Directory Structure Expected:
+10. Directory Structure Expected:
    Root/
    ├── Object1_folder/
    │   └── Filter1_folder/
@@ -476,7 +456,38 @@ TIPS FOR BEST RESULTS
 
 VERSION HISTORY
 ---------------
-v3.8.3 - Current Version - Batch Mode Enhancements
+v3.9.0 - Current Version - Dark Subtraction Fix and FITS I/O Overhaul
+- Complete rewrite of FITS file handling using astropy.io.fits library
+  * Fixes circular shift bug in dark-subtracted images
+  * Proper handling of big-endian byte ordering
+  * Automatic BZERO/BSCALE conversion
+  * Correct handling of ROI extraction
+- Preserve non-standard FITS header keywords (like PROJ~, OBS~, TYPE~, etc.)
+  * Original headers preserved exactly as-is using output_verify='ignore'
+  * No modification or renaming of invalid keywords
+- Add HISTORY cards to document dark subtraction processing
+  * Records processing date and time
+  * Notes that astropy.io.fits was used
+- Fix dark-subtracted file preservation
+  * Files now correctly appear in user-specified output directory
+  * Not deleted after .bsp1 creation when "Save dark-subtracted FITS files" is checked
+- Dark subtraction properly applied to power spectrum computation
+  * Power spectra computed from dark-subtracted data when enabled
+  * Works in both single target and batch modes
+
+v3.8.4 - Single Target Mode Enhancements
+- Updated Single Target Mode to use output directory instead of specific file
+  * Changed "Output File" to "Output Directory" for consistency
+  * Files automatically named based on FITS headers (date_target_filter.bsp1)
+  * Backward compatible: still accepts file paths for direct output specification
+- Added .pow file generation option for Single Target Mode
+  * New checkbox "Save power spectrum (.pow file)" in single target options
+  * Generates .pow file alongside .bsp1 with same base name
+  * Works with both specified and auto-generated output paths
+  * Contains averaged power spectrum for later analysis in Fringe Pattern tab
+- Consistent file naming between Single Target and Batch modes
+
+v3.8.3 - Batch Mode Enhancements
 - Added optional local copy of source file tree for network processing
   * New "Local temp directory" selector for specifying copy destination
   * "Preserve source tree structure" checkbox for maintaining folder hierarchy
