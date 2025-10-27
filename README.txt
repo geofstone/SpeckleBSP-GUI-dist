@@ -1,5 +1,5 @@
 ================================================================================
-                         SpeckleBSP GUI v4.0.1
+                         SpeckleBSP GUI v4.1.0
                    Graphical Interface for SpeckleBSP Processing
                               Author: Geoff Stone
 ================================================================================
@@ -456,7 +456,18 @@ TIPS FOR BEST RESULTS
 
 VERSION HISTORY
 ---------------
-v4.0.1 - Current Version - FITS HISTORY Card Fix
+v4.1.0 - Current Version - Document-Friendly Fringe Export
+- Added document-friendly export options for fringe pattern windows
+  * Three export styles: Default (Dark Theme), White BG (Color), White BG (B&W)
+  * Radio button selection allows easy switching between export formats
+  * White background with black text for document compatibility
+  * Grayscale option for black & white publications
+  * High-resolution 300 DPI export for publication quality
+  * Automatically restores dark theme after saving
+- Improved user interface with cleaner startup output
+- Custom navigation toolbar for seamless integration with matplotlib
+
+v4.0.1 - FITS HISTORY Card Fix
 - Fixed FITS HISTORY card implementation in pure_fits.py
   * HISTORY/COMMENT cards now properly use 'value' parameter for text content
   * Multiple HISTORY cards are now appended (not replaced) in headers
