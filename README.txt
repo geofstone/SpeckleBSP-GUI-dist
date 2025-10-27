@@ -1,5 +1,5 @@
 ================================================================================
-                         SpeckleBSP GUI v4.0.0
+                         SpeckleBSP GUI v4.0.1
                    Graphical Interface for SpeckleBSP Processing
                               Author: Geoff Stone
 ================================================================================
@@ -456,7 +456,15 @@ TIPS FOR BEST RESULTS
 
 VERSION HISTORY
 ---------------
-v4.0.0 - Current Version - Major Architecture Update
+v4.0.1 - Current Version - FITS HISTORY Card Fix
+- Fixed FITS HISTORY card implementation in pure_fits.py
+  * HISTORY/COMMENT cards now properly use 'value' parameter for text content
+  * Multiple HISTORY cards are now appended (not replaced) in headers
+  * Dark-subtracted FITS files now correctly include audit trail with timestamps
+- All dark-subtracted files include processing history in their headers
+- Verified with comprehensive test suite
+
+v4.0.0 - Major Architecture Update
 - Replaced astropy with pure Python FITS implementation
   * Created pure_fits.py - complete FITS reader/writer without dependencies
   * Handles BZERO/BSCALE scaling, big-endian conversion
