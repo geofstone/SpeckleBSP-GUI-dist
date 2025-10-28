@@ -1,5 +1,5 @@
 ================================================================================
-                         SpeckleBSP GUI v4.1.0
+                         SpeckleBSP GUI v4.2.0
                    Graphical Interface for SpeckleBSP Processing
                               Author: Geoff Stone
 ================================================================================
